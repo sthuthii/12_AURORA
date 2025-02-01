@@ -99,7 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       MaterialPageRoute(builder: (context) => UserDetailsPage()),
                     );
                   },
-                  child: Text("Go to UserDetailsPage", style: TextStyle(color: Colors.white)),
+                  child: Text("Input health details", style: TextStyle(color: Colors.white)),
                 ),
                 SizedBox(height: 10), // Add spacing
                 // Navigate back to Login Page
