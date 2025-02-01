@@ -23,7 +23,7 @@ class CameraAndOCRScreen extends StatefulWidget {
 }
 
 class _CameraAndOCRScreenState extends State<CameraAndOCRScreen> {
-  late CameraController _controller;
+  CameraController? _controller; // Make controller nullable
   late Future<void> _initializeControllerFuture;
   final ImagePicker _picker = ImagePicker();
   String _ocrText = "Scan a food product to extract text.";
@@ -38,7 +38,7 @@ class _CameraAndOCRScreenState extends State<CameraAndOCRScreen> {
       ResolutionPreset.high,
     );
 
-    _initializeControllerFuture = _controller.initialize();
+    _initializeControllerFuture = _controller!.initialize(); // Use '!' to safely access
   }
 
   @override
@@ -49,10 +49,17 @@ class _CameraAndOCRScreenState extends State<CameraAndOCRScreen> {
 
   // Function to take a picture using the camera
   Future<void> _takePicture() async {
+    if (_controller == null || !_controller!.value.isInitialized) {
+      setState(() {
+        _ocrText = "Camera is not initialized.";
+      });
+      return;
+    }
+
     try {
       await _initializeControllerFuture;
 
-      final XFile? imageFile = await _controller.takePicture();
+      final XFile? imageFile = await _controller!.takePicture();
 
       if (imageFile != null) {
         _processImage(imageFile);

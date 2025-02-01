@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'home.dart'; // Import the Home Page
+import 'congrats.dart'; // Import the new page
+import 'button.dart'; // Import the button.dart page (CameraAndOCRScreen)
 
 class UserDetailsPage extends StatefulWidget {
   @override
@@ -23,10 +24,10 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
 
       _showMessage("Details submitted successfully!");
 
-      // Navigate to Home Page
+      // Navigate to Congratulations Page
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()), // Navigate to HomePage
+        MaterialPageRoute(builder: (context) => CongratulationsPage()), // Navigate to CongratulationsPage
       );
     }
   }
