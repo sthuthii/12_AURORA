@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Ingredify</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBj7ne9lQqCXuLqw7RVSQFW-A6wI0nMLEc",
+            authDomain: "scanner-99f96.firebaseapp.com",
+            projectId: "scanner-99f96",
+            storageBucket: "scanner-99f96.appspot.com",
+            messagingSenderId: "923977783852",
+            appId: "1:923977783852:web:12471a68907602b172cf89"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+
+        // Handle form submission for login
+        document.getElementById("loginForm").addEventListener("submit", async function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            if (!email || !password) {
+                alert("Please enter both email and password!");
+                return;
+            }
+
+            try {
+                // Attempt to sign in the user
+                await signInWithEmailAndPassword(auth, email, password);
+                alert("Login successful!");
+
+                // Redirect to user details page after login
+                window.location.href = "user_details.html"; // Redirect to userdetails.html page
+            } catch (error) {
+                alert(error.message); // Show error message if login fails
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analyze Ingredients</title>
+  <style>
+    /* General Reset */
+    body, h1, h2, h3, ul {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f6f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      color: #4CAF50;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin: 10px 0;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    /* Ingredient Analysis Section */
+    #ingredient-analysis {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+      width: 90%;
+      max-width: 700px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .ingredient-category {
+      margin-bottom: 20px;
+    }
+
+    .ingredient-category h3 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .ingredient-category ul {
+      list-style-type: none;
+    }
+
+    .ingredient-category ul li {
+      background-color: #f9f9f9;
+      margin-bottom: 5px;
+      padding: 8px;
+      border-radius: 5px;
+    }
+
+    /* Pie Chart Section */
+    #pie-chart-container {
+      margin-top: 30px;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 600px) {
+      button {
+        width: 100%;
+        padding: 12px;
+      }
+
+      #ingredient-analysis {
+        width: 95%;
+      }
+
+      #pie-chart-container {
+        width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Ingredient Breakdown</h1>
+
+  <div id="ingredient-analysis">
+    <!-- Ingredient analysis will go here -->
+  </div>
+
+  <button id="generate-chart-btn" onclick="generatePieChart()">Generate Pie Chart</button>
+
+  <div id="pie-chart-container">
+    <canvas id="ingredientPieChart"></canvas>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    // Get extracted text from localStorage
+    const extractedText = localStorage.getItem('extractedText');
+    if (extractedText) {
+      analyzeIngredients(extractedText);
+    }
+
+    // Analyze ingredients
+    function analyzeIngredients(text) {
+      const ingredients = text.toLowerCase().split(',').map(i => i.trim());
+
+      const unhealthyIngredients = ['sugar', 'corn syrup', 'high fructose corn syrup', 'hydrogenated', 'artificial', 'preservatives', 'sodium', 'saturated fat', 'trans fat', 'refined', 'processed', 'margarine'];
+      const moderateIngredients = ['milk', 'cream', 'butter', 'cheese', 'salt', 'oil', 'flour', 'bread', 'pasta', 'rice', 'meat', 'eggs'];
+      const healthyIngredients = ['spinach', 'kale', 'quinoa', 'brown rice', 'olive oil', 'nuts', 'seeds', 'whole grain', 'vegetable', 'fruit', 'legumes', 'protein', 'avocado', 'salmon', 'chia', 'flax', 'green tea', 'herbs', 'spices'];
+
+      const healthy = ingredients.filter(ingredient => healthyIngredients.some(healthy => ingredient.includes(healthy)));
+      const moderate = ingredients.filter(ingredient => moderateIngredients.some(mod => ingredient.includes(mod)) && !healthy.includes(ingredient));
+      const unhealthy = ingredients.filter(ingredient => unhealthyIngredients.some(bad => ingredient.includes(bad)) && !healthy.includes(ingredient) && !moderate.includes(ingredient));
+
+      // Display the analysis result
+      const analysisResult = {
+        healthy,
+        moderate,
+        unhealthy
+      };
+      displayAnalysisResult(analysisResult);
+
+      // Store counts for pie chart generation
+      window.healthyCount = healthy.length;
+      window.moderateCount = moderate.length;
+      window.unhealthyCount = unhealthy.length;
+    }
+
+    // Display the analysis result
+    function displayAnalysisResult(result) {
+      const analysisContainer = document.getElementById('ingredient-analysis');
+      analysisContainer.innerHTML = `
+        <h2>Ingredient Breakdown</h2>
+        <div class="ingredient-category">
+          <h3>Healthy Ingredients</h3>
+          <ul>${result.healthy.map(item => `<li>${item}</li>`).join('')}</ul>
+        </div>
+        <div class="ingredient-category">
+          <h3>Moderate Ingredients</h3>
+          <ul>${result.moderate.map(item => `<li>${item}</li>`).join('')}</ul>
+        </div>
+        <div class="ingredient-category">
+          <h3>Unhealthy Ingredients</h3>
+          <ul>${result.unhealthy.map(item => `<li>${item}</li>`).join('')}</ul>
+        </div>
+      `;
+    }
+
+    // Generate the pie chart
+    function generatePieChart() {
+      // Get ingredient counts from the window variables
+      const healthyCount = window.healthyCount || 0;
+      const moderateCount = window.moderateCount || 0;
+      const unhealthyCount = window.unhealthyCount || 0;
+
+      // Check if counts are 0, if so, prevent generating the chart
+      if (healthyCount === 0 && moderateCount === 0 && unhealthyCount === 0) {
+        alert('No ingredients found for analysis.');
+        return;
+      }
+
+      // Create the pie chart
+      const ctx = document.getElementById('ingredientPieChart').getContext('2d');
+      const chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Healthy', 'Moderate', 'Unhealthy'],
+          datasets: [{
+            data: [healthyCount, moderateCount, unhealthyCount],
+            backgroundColor: ['#4CAF50', '#FFEB3B', '#F44336'],
+            borderColor: ['#388E3C', '#FBC02D', '#C62828'],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            tooltip: {
+              callbacks: {
+                label: function(tooltipItem) {
+                  const label = tooltipItem.label || '';
+                  return `${label}: ${tooltipItem.raw}`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

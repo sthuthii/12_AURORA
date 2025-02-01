@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7fc;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 30px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      display: block;
+      margin: 20px auto;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .response {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 18px;
+      color: #333;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
+      .container {
+        padding: 15px;
+      }
+
+      button {
+        width: 100%;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>User Profile</h1>
+
+  <div class="container">
+    <form id="userDetailsForm">
+      <div class="form-group">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="allergens">Allergens (Comma Separated):</label>
+        <input type="text" id="allergens" name="allergens" placeholder="e.g., peanuts, dairy, gluten">
+      </div>
+
+      <div class="form-group">
+        <label for="foodChoice">Food Choice (Vegetarian, Vegan, Non-Vegetarian, etc.):</label>
+        <select id="foodChoice" name="foodChoice" required>
+          <option value="">Select Food Preference</option>
+          <option value="vegetarian">Vegetarian</option>
+          <option value="vegan">Vegan</option>
+          <option value="non-vegetarian">Non-Vegetarian</option>
+          <option value="pescatarian">Pescatarian</option>
+          <option value="kosher">Kosher</option>
+          <option value="halal">Halal</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="diseases">Pre-existing Diseases (Comma Separated):</label>
+        <input type="text" id="diseases" name="diseases" placeholder="e.g., diabetes, hypertension, asthma">
+      </div>
+
+      <div class="form-group">
+        <label for="additionalInfo">Additional Health Information:</label>
+        <textarea id="additionalInfo" name="additionalInfo" placeholder="Any other health conditions or preferences"></textarea>
+      </div>
+
+      <button type="submit">Save Details</button>
+    </form>
+
+    <div class="response" id="responseMessage"></div>
+  </div>
+
+  <script>
+    // Handling form submission
+    document.getElementById("userDetailsForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent form submission
+
+      const userName = document.getElementById("name").value;
+      const allergens = document.getElementById("allergens").value;
+      const foodChoice = document.getElementById("foodChoice").value;
+      const diseases = document.getElementById("diseases").value;
+      const additionalInfo = document.getElementById("additionalInfo").value;
+
+      // Save the data in localStorage (can later be sent to a database)
+      const userData = {
+        name: userName,
+        allergens: allergens,
+        foodChoice: foodChoice,
+        diseases: diseases,
+        additionalInfo: additionalInfo
+      };
+
+      localStorage.setItem('userDetails', JSON.stringify(userData));
+
+      // Display confirmation message
+      const responseMessage = document.getElementById("responseMessage");
+      responseMessage.innerHTML = `
+        <strong>Success!</strong> Your details have been saved.
+        <br><br>
+        <strong>Name:</strong> ${userName}
+        <br>
+        <strong>Allergens:</strong> ${allergens}
+        <br>
+        <strong>Food Choice:</strong> ${foodChoice}
+        <br>
+        <strong>Diseases:</strong> ${diseases}
+        <br>
+        <strong>Additional Info:</strong> ${additionalInfo}
+      `;
+
+      // Show an alert before redirecting to homepage
+      alert("Your details have been saved successfully!");
+
+      // Redirect to homepage after saving details
+      window.location.href = "homepage.html"; // Redirect to homepage.html
+    });
+  </script>
+
+</body>
+</html>
