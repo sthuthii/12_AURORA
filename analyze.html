@@ -79,6 +79,13 @@
       border-radius: 5px;
     }
 
+    /* Health Message Box */
+    #health-message {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
     /* Pie Chart Section */
     #pie-chart-container {
       margin-top: 30px;
@@ -110,6 +117,9 @@
   <div id="ingredient-analysis">
     <!-- Ingredient analysis will go here -->
   </div>
+
+  <!-- Health Message Box -->
+  <div id="health-message"></div>
 
   <button id="generate-chart-btn" onclick="generatePieChart()">Generate Pie Chart</button>
 
@@ -150,6 +160,9 @@
       window.healthyCount = healthy.length;
       window.moderateCount = moderate.length;
       window.unhealthyCount = unhealthy.length;
+
+      // Display health message
+      displayHealthMessage(healthy.length, moderate.length, unhealthy.length);
     }
 
     // Display the analysis result
@@ -170,6 +183,22 @@
           <ul>${result.unhealthy.map(item => `<li>${item}</li>`).join('')}</ul>
         </div>
       `;
+    }
+
+    // Display health message based on ingredient counts
+    function displayHealthMessage(healthyCount, moderateCount, unhealthyCount) {
+      const healthMessage = document.getElementById('health-message');
+      if (healthyCount > unhealthyCount) {
+        healthMessage.innerText = 'This product seems healthy! 🌱';
+        healthMessage.style.color = '#4CAF50'; // Green for healthy
+      } else if (unhealthyCount > healthyCount) {
+        healthMessage.innerText = 'This product is not very healthy. ⚠️';
+        healthMessage.style.color = '#F44336'; // Red for unhealthy
+      } else {
+        healthMessage.innerText = 'This product has a balance of healthy and unhealthy ingredients. ⚖️';
+        healthMessage.style.color = '#FFEB3B'; // Yellow for balanced
+      }
+      healthMessage.style.display = 'block';
     }
 
     // Generate the pie chart
@@ -216,6 +245,15 @@
         }
       });
     }
+    // Fetch ingredients from the backend and display them
+fetch('http://localhost:3000/ingredients')
+  .then(response => response.json())
+  .then(data => {
+    console.log('Ingredients:', data);
+    // Handle displaying the ingredients here (e.g., in a table or list)
+  })
+  .catch(error => console.error('Error:', error));
+
   </script>
 
 </body>

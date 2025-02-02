@@ -1,0 +1,127 @@
+/* General Body Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f9fc;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  /* Heading Styling */
+  h1 {
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  /* Container Styling */
+  .container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Form Group Styling */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  /* Form Label Styling */
+  .form-group label {
+    display: block;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  /* Input Field Styling */
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #fafafa;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #4CAF50;
+    background-color: #ffffff;
+  }
+  
+  /* Textarea Styling */
+  .form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Submit Button Styling */
+  button {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Response Message Styling */
+  .response {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e7f9e7;
+    color: #4CAF50;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 16px;
+  }
+  
+  .response strong {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .container {
+      padding: 20px;
+    }
+  
+    h1 {
+      font-size: 1.5rem;
+    }
+  
+    button {
+      font-size: 14px;
+    }
+  
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      font-size: 14px;
+    }
+  }
+  
